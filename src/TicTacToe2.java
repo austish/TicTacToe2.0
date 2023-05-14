@@ -33,30 +33,37 @@ public class TicTacToe2 {
         Scanner in = new Scanner(System.in);
         while (userCount < 3 || userCount > 10) {
             System.out.print("Please enter the number of players (3-10): ");
-            userCount = in.nextInt();
+            //validate user input
+            try {
+                userCount = in.nextInt();
+            } catch (Exception e) {
+                in.nextLine();                  //discard bad input
+            }
         }
 
         //create users
-        char piece;
+        char piece = '\0';
         boolean pieceTaken;
         user newUser;
         for (int i = 0; i < userCount; i++) {
             //get user pieces
             do {
                 System.out.print("Enter User " + (i+1) + " piece: ");
-                piece = in.next().charAt(0);
+                try {
+                    piece = in.next().charAt(0);
+                } catch (Exception e) {
+                    in.nextLine();              //discard bad input
+                }
                 pieceTaken = false;
                 newUser = new user(piece, i);
-                //check if piece already taken (except for first piece)
-                if (i != 0) {
-                    //loop through users vector
-                    for (int j = 0; j < users.size(); j++) {
-                        //prompt user to enter new piece if piece taken
-                        if (users.get(j).equals(newUser)) {
-                                System.out.print("Piece already taken. ");
-                                pieceTaken = true;
-                                break;
-                        }
+
+                //check if piece already taken
+                for (int j = 0; j < users.size(); j++) {
+                    //prompt user to enter new piece if piece taken
+                    if (users.get(j).equals(newUser)) {
+                            System.out.print("Piece already taken. ");
+                            pieceTaken = true;
+                            break;
                     }
                 }
             } while (pieceTaken);
@@ -66,15 +73,19 @@ public class TicTacToe2 {
         //ask for winning condition
         while (winCondition < 3 || winCondition > userCount + 1) {
             System.out.print("How many pieces in a row for a win? ");
-            winCondition = in.nextInt();
+            try {
+                winCondition = in.nextInt();
+            } catch (Exception e) {
+                in.nextLine();              //discard bad input
+            }
             if (winCondition < 3 || winCondition > userCount + 1) {
-                System.out.print("Invalid amount. ");
+                System.out.print("Try again. ");
             }
         }
         
         //create board
         board newBoard = new board(userCount);
-        int x , y;
+        int x = -1, y = -1;
         //run game while game is not over
         while (!gameOver) {
             //loop through all users
@@ -86,8 +97,14 @@ public class TicTacToe2 {
                     do
                     {
                         System.out.println("User " + (i+1) + "(" + users.get(i).getSym() + ")" + " - Enter row and column location of move:");
-                        x = in.nextInt();
-                        y = in.nextInt();
+                        try {
+                            x = in.nextInt();
+                            y = in.nextInt();
+                        } catch (Exception e) {
+                            in.nextLine();
+                            x = -1;
+                            y = -1;
+                        }
                     } while (!newBoard.move(x, y, users.get(i).getSym()));
                     
                     moves++;
