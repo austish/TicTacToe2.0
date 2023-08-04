@@ -1,7 +1,7 @@
 import java.util.*; 
 
 /**
- * TicTacToe2 class responsible for runnign TicTacToe2 game.
+ * TicTacToe2 class responsible for running TicTacToe2 game.
  * Managers all user input including piece selection, win conditions, etc.
  */
 public class TicTacToe2 {
